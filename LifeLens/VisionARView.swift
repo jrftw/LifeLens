@@ -1,5 +1,11 @@
+//
+//  VisionARView.swift
+//  LifeLens
+//
+//  Created by Kevin Doyle Jr. on 11/16/24.
+//
+
 import SwiftUI
-import RealityKit
 import os
 
 struct VisionARView: View {
@@ -7,23 +13,16 @@ struct VisionARView: View {
     
     var body: some View {
         VStack {
-            Text("AR Dashboard (VisionOS)")
+            Text("AR Dashboard (Placeholder for VisionOS)")
                 .font(.title)
                 .padding()
             
-            RealityView()
-                .onAppear {
-                    logger.info("VisionARView appeared")
-                }
+            Text("ARView is a placeholder until visionOS implementation.")
+                .foregroundColor(.gray)
+                .padding()
+        }
+        .onAppear {
+            logger.info("VisionARView appeared")
         }
     }
-}
-
-struct RealityView: UIViewRepresentable {
-    func makeUIView(context: Context) -> ARView {
-        let arView = ARView(frame: .zero)
-        return arView
-    }
-    
-    func updateUIView(_ uiView: ARView, context: Context) {}
 }

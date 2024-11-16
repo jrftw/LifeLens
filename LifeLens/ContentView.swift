@@ -6,61 +6,54 @@
 //
 
 import SwiftUI
-import SwiftData
+import os
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
-
+    let logger = Logger(subsystem: "com.lifelens.app", category: "UI")
+    
     var body: some View {
-        NavigationSplitView {
+        NavigationView {
             List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                Section(header: Text("Core Features")) {
+                    NavigationLink(destination: LifeAssistantView()) {
+                        Text("Life Assistant")
+                            .font(.headline)
+                    }
+                    
+                    NavigationLink(destination: HealthDashboardView()) {
+                        Text("Health Dashboard")
+                            .font(.headline)
+                    }
+                    
+                    NavigationLink(destination: PlannerView()) {
+                        Text("Life Planner")
+                            .font(.headline)
                     }
                 }
-                .onDelete(perform: deleteItems)
-            }
-#if os(macOS)
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-#endif
-            .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
+                
+                Section(header: Text("Advanced Features")) {
+                    NavigationLink(destination: VisionARView()) {
+                        Text("Vision AR Dashboard")
+                            .font(.headline)
+                    }
+                    
+                    NavigationLink(destination: CreativeHubView()) {
+                        Text("Creative Hub")
+                            .font(.headline)
+                    }
                 }
-#endif
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+                
+                Section(header: Text("Community")) {
+                    NavigationLink(destination: CommunityView()) {
+                        Text("Community & Sharing")
+                            .font(.headline)
                     }
                 }
             }
-        } detail: {
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+            .navigationTitle("LifeLens")
+            .onAppear {
+                logger.info("ContentView appeared")
             }
         }
     }
-}
-
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }

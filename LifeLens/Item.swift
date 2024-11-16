@@ -6,13 +6,8 @@
 //
 
 import Foundation
-import SwiftData
 
-@Model
-final class Item {
+struct Item: Identifiable, Hashable, Equatable {
+    var id = UUID()
     var timestamp: Date
-    
-    init(timestamp: Date) {
-        self.timestamp = timestamp
-    }
 }

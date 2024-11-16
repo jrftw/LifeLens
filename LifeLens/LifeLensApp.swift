@@ -6,27 +6,31 @@
 //
 
 import SwiftUI
-import SwiftData
+import os
 
 @main
 struct LifeLensApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
+    @Environment(\.scenePhase) var scenePhase
+    let logger = Logger(subsystem: "com.lifelens.app", category: "Lifecycle")
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    logger.info("LifeLens App Launched")
+                }
+                .onChange(of: scenePhase) { newPhase in
+                    switch newPhase {
+                    case .active:
+                        logger.info("App is active")
+                    case .inactive:
+                        logger.info("App is inactive")
+                    case .background:
+                        logger.info("App is in background")
+                    @unknown default:
+                        logger.error("Unknown app state encountered")
+                    }
+                }
         }
-        .modelContainer(sharedModelContainer)
     }
 }

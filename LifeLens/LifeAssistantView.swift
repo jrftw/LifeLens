@@ -1,3 +1,10 @@
+//
+//  LifeAssistantView.swift
+//  LifeLens
+//
+//  Created by Kevin Doyle Jr. on 11/16/24.
+//
+
 import SwiftUI
 import os
 
@@ -31,7 +38,6 @@ struct LifeAssistantView: View {
     
     func fetchAIResponse() {
         logger.info("Fetching AI response for query: \(userQuery)")
-        // Mock AI Response for now
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.aiResponse = "Here's what I suggest for '\(userQuery)': Stay positive and organized!"
             logger.info("AI response delivered: \(self.aiResponse)")
